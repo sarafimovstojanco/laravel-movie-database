@@ -16,5 +16,6 @@ use App\Http\Controllers\UserController;
 */
 
 Route::apiResource('users', 'UserController');
+Route::apiResource('actors', 'ActorsController');
 Route::post('login', 'AuthController@login');
 
