@@ -47,12 +47,12 @@ class CreateActor extends Command
         foreach($movie as $m){
             foreach($movies as $jsonMovies)
             if($m['title'] == $jsonMovies['originalTitle']){
-                foreach($jsonMovies['actors'] as $jsonActors){
-                    Actor::firstOrCreate([
-                        "name" => $jsonActors,
-                        "watchable_type" => 'Movies',
-                        "watchable_id" => $m['id'],
-                        ]);                        ;
+            foreach($jsonMovies['actors'] as $jsonActors){
+                Actor::firstOrCreate([
+                    "name" => $jsonActors,
+                    "watchable_type" => 'Movies',
+                    "watchable_id" => $m['id'],
+                    ]);
                 }
             }
         }
