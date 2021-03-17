@@ -4,14 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Movie extends Model
+class Serie extends Model
 {
-    protected $fillable = [
-        'title',
-        'imdbRating',
-        'year'
-    ];
-
     public function actors()
     {
         return $this->morphMany(Actor::class, 'watchable');

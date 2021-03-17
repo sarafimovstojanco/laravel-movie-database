@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage; 
 use App\Actor;
+use App\Movie;
 use DB;
 
 class CreateActor extends Command
@@ -14,14 +15,14 @@ class CreateActor extends Command
      *
      * @var string
      */
-    protected $signature = 'command:create-actor';
+    protected $signature = 'command:create-actors';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add new actor in the actors table';
+    protected $description = 'Add the actors in the actors table';
 
     /**
      * Create a new command instance.
@@ -42,27 +43,20 @@ class CreateActor extends Command
     {
         $movies = Storage::disk('local')->get('movies.json');
         $movies = json_decode($movies, true);
-
-        $actors = []; 
-        foreach($movies as $key=>$arr){
-            $actors[] =  $arr['actors'];
-            $movie_names[] =  $arr['originalTitle'];
-            $actor=[];
-            foreach($actors as $arr) {
-                foreach($arr as $a){
-                    $actor[] = $a;
+        $movie = Movie::all();
+        foreach($movie as $m){
+            foreach($movies as $jsonMovies)
+            if($m['title'] == $jsonMovies['originalTitle']){
+                foreach($jsonMovies['actors'] as $jsonActors){
+                    Actor::firstOrCreate([
+                        "name" => $jsonActors,
+                        "watchable_type" => 'Movies',
+                        "watchable_id" => $m['id'],
+                        ]);                        ;
                 }
-               
             }
         }
-        $actor = array_unique($actor);
-        $name=[];
-        foreach ($actor as $name){
-        if(!Actor::where('name', $name )->exists()){
-        DB::table('actors')->insert([
-            'name' => $name,
-        ]);
-        }
+
+        $this->info('Actors created successfully !!!');
     }
-}
 }

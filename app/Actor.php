@@ -8,4 +8,8 @@ class Actor extends Model
 {
     protected $guarded = ['actors'];
 
-}
+    public function watchable()
+    {
+        return $this->morphTo();
+    }
+} 
