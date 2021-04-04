@@ -18,6 +18,7 @@ class AuthController extends Controller
 
             return [
                 'token' => $token,
+                'id' => $user->id
             ];
         }
         

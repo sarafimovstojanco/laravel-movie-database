@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Movie;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
@@ -11,6 +12,35 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
+    public function watched(Request $request)
+    {
+        $watched_movie = Movie::find($request->movie_id);
+
+        $watched_movie->users()->sync($request->user_id, false);
+
+        return response($watched_movie);
+    }
+
+    public function watched_delete(Request $request)
+    {
+        $not_watched_movie = Movie::find($request->movie_id);
+
+        $not_watched_movie->users()->detach($request->user_id);
+
+        return response($not_watched_movie);
+    }
+
+    public function rating(Request $request)
+    {
+        $rated_movie = Movie::find($request->movie_id);
+
+        $rated_movie->users()->where('user_id', $request->user_id)->update(['rating' => $request->rating]);
+        $rated_movie['rating']=$request->rating;
+        
+        return response ($rated_movie);
+
+    }
+    
     public function index()
     {
         return User::all();
@@ -18,7 +48,10 @@ class UserController extends Controller
 
     public function show($id)
     {
-        return User::find($id);
+        $user = User::find($id);
+        $user->movies;
+
+        return $user;
     }
 
     public function store(UserCreateRequest $request)
@@ -38,9 +71,6 @@ class UserController extends Controller
 
         $user->update($request->only('first_name', 'last_name', 'email', 'background', 'color', 'dark_mode')+[
             'password' => Hash::make($request->password)
-            // 'background' => $request->background,
-            // 'color' => $request->color,
-            // 'dark_mode' => $request->dark_mode,
         ]);
 
         return response($user, Response::HTTP_ACCEPTED); 

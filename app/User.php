@@ -27,4 +27,14 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function watchable()
+    {
+        return $this->morphTo();
+    }
+    
+    public function movies()
+    {
+        return $this->belongsToMany(Movie::class);
+    }
+
 }

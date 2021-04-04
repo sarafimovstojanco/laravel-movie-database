@@ -14,15 +14,21 @@ class ActorsController extends Controller
 {
     public function index()
     {
-        //
+        $movies = Movie::all();
+
+        foreach($movies as $movie)
+        {
+            return $movie->actors;
+        }
     }
 
     public function store(Request $request)
     {
-      return Movie::firstOrCreate([
-            "title" => $request['title'],
-            "imdbRating" => $request['imdbRating'],
-            "year" => $request['year']
+        return Actor::firstOrCreate([
+            'watchable_type' => $request['type'],
+            'watchable_id' => $request['id'],
+            'name' => $request['actor'],
             ]);
     }
+   
 }

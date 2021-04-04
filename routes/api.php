@@ -16,6 +16,12 @@ use App\Http\Controllers\UserController;
 */
 
 Route::apiResource('users', 'UserController');
+Route::post('users/watched', 'UserController@watched');
+Route::post('users/watched_delete', 'UserController@watched_delete');
+Route::post('users/rating', 'UserController@rating');
+Route::post('movies/get', 'MoviesController@get');
+Route::post('movies/filtered', 'MoviesController@filtered');
+Route::apiResource('movies', 'MoviesController');
 Route::apiResource('actors', 'ActorsController');
 Route::post('login', 'AuthController@login');
 

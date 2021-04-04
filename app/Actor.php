@@ -12,4 +12,5 @@ class Actor extends Model
     {
         return $this->morphTo();
     }
+    
 } 

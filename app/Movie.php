@@ -16,4 +16,9 @@ class Movie extends Model
     {
         return $this->morphMany(Actor::class, 'watchable');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
